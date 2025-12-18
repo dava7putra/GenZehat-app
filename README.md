@@ -90,7 +90,7 @@ Tampilan antarmuka (UI) pada aplikasi GenZehat
 ### b. Tampilan Dashboard
 <img width="600" height="300" alt="Cuplikan layar 2025-12-10 055808" src="https://github.com/user-attachments/assets/f8dfa120-2da7-4337-8cd0-c6101a24e758" />
 
-### c. Tampilan Menu Setting
+### c. Tampilan Jadwal Latihan
 <img width="600" height="300" alt="Cuplikan layar 2025-12-10 055824" src="https://github.com/user-attachments/assets/ec23dfe0-2ab8-49d8-a7e5-1f3a2fd92f4d" />
 
 ### d. Tampilan Menu Setting
