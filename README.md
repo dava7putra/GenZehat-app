@@ -240,4 +240,4 @@ Aplikasi Web: **http://localhost:8000**
 This project is licensed under the **MIT License**.
 
 ---
-**Dibuat oleh:** Arya Sinarta Sihite
+**Dibuat oleh:** Dava
