@@ -34,10 +34,9 @@ GenZehat adalah platform pelacak kebugaran (Fitness Tracker) berbasis web yang d
 |----|------------|----------|
 | US-01 | Sebagai user, saya ingin membuat akun agar progres latihan tersimpan secara privat | High |
 | US-02 | Sebagai user, saya ingin mencentang jadwal harian (Selesai/Terlewat) secara instan | High |
-| US-03 | Sebagai user, saya ingin melihat instruksi detail gerakan agar tidak salah teknik | High |
-| US-04 | Sebagai user, saya ingin mengarsipkan progres minggu ini untuk melihat statistik keberhasilan | High |
-| US-05 | Sebagai user, saya ingin mengganti tingkat kesulitan (Pemula/Menengah/Pro) | Medium |
-| US-06 | Sebagai user, saya ingin melihat daftar riwayat (History) mingguan yang sudah saya selesaikan | Medium |
+| US-03 | Sebagai user, saya ingin mengarsipkan progres minggu ini untuk melihat statistik keberhasilan | High |
+| US-04 | Sebagai user, saya ingin mengganti tingkat kesulitan (Pemula/Menengah/Pro) | Medium |
+| US-05 | Sebagai user, saya ingin melihat daftar riwayat (History) mingguan yang sudah saya selesaikan | Medium |
 
 ---
 
@@ -52,7 +51,6 @@ GenZehat adalah platform pelacak kebugaran (Fitness Tracker) berbasis web yang d
 | FR-04 | Workout Details | Modal popup berisi instruksi gerakan dan repetisi | ✅ Done |
 | FR-05 | Personal Archiving | Fitur "Save & Exit" untuk mengarsipkan statistik mingguan | ✅ Done |
 | FR-06 | History View | Halaman khusus untuk melihat riwayat progres pribadi | ✅ Done |
-| FR-07 | REST API Support | Endpoint untuk integrasi dengan aplikasi Android | ✅ Done |
 
 ### Non-Functional Requirements
 | ID | Requirement | Deskripsi |
@@ -60,7 +58,7 @@ GenZehat adalah platform pelacak kebugaran (Fitness Tracker) berbasis web yang d
 | NFR-01 | Security | CSRF protection untuk semua request POST di Web |
 | NFR-02 | Performance | Update UI instan (Asynchronous) tanpa reload halaman |
 | NFR-03 | Data Integrity | Mencegah duplikasi data status harian di database |
-| NFR-04 | Usability | Desain responsif untuk penggunaan di browser mobile/PC |
+| NFR-04 | Usability | Desain responsif untuk penggunaan di browser PC |
 
 ---
 
@@ -235,9 +233,4 @@ Aplikasi Web: **http://localhost:8000**
 | POST | `/save-history` | Mengarsipkan data minggu ini ke tabel history |
 
 ---
-
-## 📜 License
-This project is licensed under the **MIT License**.
-
----
-**Dibuat oleh:** Dava
+**Dibuat oleh:** Dava Anugrah Putra
