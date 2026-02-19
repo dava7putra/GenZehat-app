@@ -104,19 +104,23 @@ flowchart TD
 sequenceDiagram
     autonumber
     actor User
-    participant View as History_Page
-    participant Controller as History_Controller
-    participant DB as MySQL_DB
+    participant Browser as Web_Browser (JavaScript)
+    participant Laravel as Laravel_Controller (web.php)
+    participant DB as MySQL_Database
 
-    User->>View: Access_History_Menu
-    View->>Controller: GET_History_Request
+    User->>Browser: Klik tombol status "Selesai" (misal: Senin)
     
-    Note over Controller: Identify_Logged_In_User
-    Controller->>DB: Query_Histories(auth_user_id)
-    DB-->>Controller: Personal_History_Data
+    Note over Browser, Laravel: Proses Asynchronous (AJAX)
+    Browser->>Laravel: POST /save-progress (Membawa Data & CSRF Token)
     
-    Controller-->>View: Send_Data_to_Blade
-    View-->>User: Render_Personal_History_UI
+    Laravel->>Laravel: Validasi Session & CSRF Token
+    
+    Laravel->>DB: Cek & Update tabel `daily_progress`
+    DB-->>Laravel: Konfirmasi data tersimpan
+    
+    Laravel-->>Browser: Kembalikan Response JSON {success: true}
+    
+    Browser-->>User: Ubah warna tombol jadi Hijau seketika (Tanpa Reload)
 ```
 
 ### 4. Entity Relationship Diagram (ERD)
