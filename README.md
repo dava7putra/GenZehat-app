@@ -1,140 +1,243 @@
-# GenZehat - Calisthenics Workout Tracker
+# 📚 Dokumentasi Project (Progress Report)
 
-**GenZehat** adalah aplikasi berbasis web yang dirancang untuk membantu pengguna memantau progres latihan Calisthenics (olahraga beban tubuh) secara terstruktur, disiplin, dan terukur.
-
----
-
-## 1. Deskripsi Project
-Aplikasi ini dibangun menggunakan Framework **Laravel 11** dengan arsitektur **MVC (Model-View-Controller)**. GenZehat menyelesaikan masalah pengguna yang ingin berolahraga namun tidak memiliki akses ke gym atau alat berat.
-
-**Keunggulan Utama:**
-* **Tanpa Alat:** Fokus pada gerakan *Bodyweight* (Push Up, Squat, Plank, dll).
-* **Sistem Level:** Tersedia 3 tingkatan (Pemula, Menengah, Profesional).
-* **Tracking Real-time:** Pengguna dapat menkamui hari latihan (Selesai/Terlewat).
-* **Visualisasi Data:** Grafik interaktif untuk memantau konsistensi mingguan.
-* **Efisiensi Data:** Menggunakan teknik denormalisasi JSON pada database untuk performa tinggi.
+## GenZehat - Calisthenics Workout Tracker (Web Version)
+![Laravel](https://img.shields.io/badge/Laravel-11-red?logo=laravel)
+![PHP](https://img.shields.io/badge/PHP-8.2+-blue?logo=php)
+![JavaScript](https://img.shields.io/badge/JavaScript-Fetch_API-F7DF1E?logo=javascript&logoColor=black)
+![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?logo=mysql&logoColor=white)
+![Bootstrap](https://img.shields.io/badge/Bootstrap-5.x-7952B3?logo=bootstrap)
 
 ---
 
-## 2. User Story
-Berikut adalah narasi kebutuhan pengguna dalam aplikasi ini:
+## 📖 Deskripsi
+GenZehat adalah platform pelacak kebugaran (Fitness Tracker) berbasis web yang dirancang untuk membantu pengguna memantau progres latihan *Calisthenics* (olahraga beban tubuh) secara terstruktur. Aplikasi ini fokus pada pengelolaan jadwal latihan pribadi dan pengarsipan progres mingguan untuk memantau konsistensi pengguna secara mandiri.
 
-* **Sebagai Pengguna Baru**, saya ingin mendaftar akun dan memilih tingkat kesulitan latihan agar sesuai dengan kemampuan fisik saya.
-* **Sebagai Pengguna**, saya ingin melihat jadwal latihan harian yang sudah disusun otomatis agar saya tidak bingung harus melakukan gerakan apa.
-* **Sebagai Pengguna**, saya ingin melihat instruksi detail setiap gerakan (Set & Reps) agar tidak salah melakukan teknik.
-* **Sebagai Pengguna**, saya ingin menkamui status latihan ("Selesai" atau "Terlewat") untuk mencatat kedisiplinan saya.
-* **Sebagai Pengguna**, saya ingin melihat grafik perkembangan saya setiap minggu untuk evaluasi diri.
+### Tujuan Utama:
+- Menyediakan jadwal latihan beban tubuh (Bodyweight) yang terstruktur.
+- Membantu pengguna memantau konsistensi melalui fitur pencatatan harian interaktif.
+- Mendukung pemula hingga profesional dengan sistem Level Latihan.
+- Menyediakan riwayat progres (Personal History) untuk evaluasi latihan mandiri.
+- Menyediakan basis data terpusat yang terintegrasi dengan aplikasi Android via REST API.
 
----
-
-## 3. SRS (Software Requirements Specification)
-
-### Feature List (Daftar Fitur)
-1.  **Authentication System:**
-    * Login, Register, dan Logout aman menggunakan Laravel Auth & Session.
-    * Proteksi Route menggunakan Middleware.
-2.  **Dashboard Latihan:**
-    * Tampilan jadwal 7 hari (Senin - Minggu).
-    * Indikator status visual (Hijau = Selesai, Merah = Terlewat).
-    * Penanda "HARI INI" otomatis berdasarkan tanggal sistem.
-3.  **Manajemen Level:**
-    * User dapat mengganti level (Pemula/Menengah/Pro) kapan saja.
-    * Data jadwal otomatis berubah sesuai level yang dipilih.
-4.  **Workout Detail (Modal):**
-    * Popup informasi berisi nama gerakan, jumlah repetisi, dan deskripsi cara melakukan gerakan.
-5.  **Progress Tracking:**
-    * **Bar Chart:** Statistik mingguan (Jumlah Selesai vs Terlewat).
-    * **Line Chart:** Grafik garis riwayat progres antar minggu.
-    * **Archive System:** Fitur "Simpan & Reset" untuk menyimpan data minggu ini ke history dan memulai minggu baru.
+### Tech Stack:
+- **Backend:** Laravel 11
+- **Frontend:** Blade Templates + Vanilla JavaScript (Fetch API)
+- **Database:** MySQL 8.0
+- **Authentication:** Laravel Session & CSRF Protection
+- **Cross-Platform Support:** Laravel Sanctum (Mendukung endpoint API untuk Mobile)
 
 ---
 
-## 4. UML (Unified Modeling Language)
+## 📋 User Story
 
-> *Catatan: Gambar diagram di bawah ini merepresentasikan alur sistem.*
-
-### A. Use Case Diagram
-Menggambarkan interaksi User dengan Sistem:
-* User -> Login/Register
-* User -> Mengelola Jadwal (Update Status)
-* User -> Mengganti Level
-* User -> Melihat Laporan (Grafik/History)
-
-![Use Case Diagram](docs/usecase.png)
-*(Simpan gambar Use Case kamu di folder `docs` lalu ganti nama filenya di sini)*
-
-### B. Activity Diagram
-Alur aktivitas utama (Menyimpan Progress):
-1.  User Login -> Masuk Dashboard.
-2.  Sistem menampilkan jadwal.
-3.  User klik tombol "Selesai" pada hari tertentu.
-4.  Sistem mengirim data via AJAX (Fetch) ke Controller.
-5.  Controller menyimpan data JSON ke Database.
-6.  Tampilan web diperbarui tanpa reload (Asynchronous).
-
-![Activity Diagram](docs/activity.png)
-*(Simpan gambar Activity Diagram kamu di sini)*
-
-### C. Sequence Diagram
-Alur teknis pengiriman data:
-1.  **View (JS):** `saveProgress()` dipanggil -> Mengirim request POST.
-2.  **Route:** `/save-progress` meneruskan ke Controller.
-3.  **Controller:** `FitnessController@saveProgress` menerima JSON.
-4.  **Model:** `User.php` melakukan casting JSON ke Array.
-5.  **Database:** Menyimpan ke tabel `users` kolom `progress_data`.
-
-![Sequence Diagram](docs/sequence.png)
-*(Simpan gambar Sequence Diagram kamu di sini)*
+| ID | User Story | Priority |
+|----|------------|----------|
+| US-01 | Sebagai user, saya ingin membuat akun agar progres latihan tersimpan secara privat | High |
+| US-02 | Sebagai user, saya ingin mencentang jadwal harian (Selesai/Terlewat) secara instan | High |
+| US-03 | Sebagai user, saya ingin melihat instruksi detail gerakan agar tidak salah teknik | High |
+| US-04 | Sebagai user, saya ingin mengarsipkan progres minggu ini untuk melihat statistik keberhasilan | High |
+| US-05 | Sebagai user, saya ingin mengganti tingkat kesulitan (Pemula/Menengah/Pro) | Medium |
+| US-06 | Sebagai user, saya ingin melihat daftar riwayat (History) mingguan yang sudah saya selesaikan | Medium |
 
 ---
 
-## 5. Mock-Up (Tampilan Aplikasi)
+## 📝 SRS - Feature List
 
-### Halaman Dashboard & Jadwal
-Tampilan utama dimana user melihat jadwal latihan mingguan.
-![Dashboard](docs/mockup_dashboard.png)
+### Functional Requirements
+| ID | Feature | Deskripsi | Status |
+|----|---------|-----------|--------|
+| FR-01 | Web Authentication | Login, Register, Logout menggunakan Laravel Session | ✅ Done |
+| FR-02 | Daily Progress Tracker | Checklist harian interaktif via AJAX Fetch API | ✅ Done |
+| FR-03 | Level Management | Pilihan level latihan (Pemula, Menengah, Pro) | ✅ Done |
+| FR-04 | Workout Details | Modal popup berisi instruksi gerakan dan repetisi | ✅ Done |
+| FR-05 | Personal Archiving | Fitur "Save & Exit" untuk mengarsipkan statistik mingguan | ✅ Done |
+| FR-06 | History View | Halaman khusus untuk melihat riwayat progres pribadi | ✅ Done |
+| FR-07 | REST API Support | Endpoint untuk integrasi dengan aplikasi Android | ✅ Done |
 
-### Detail Instruksi Latihan
-Tampilan Modal saat user mengklik salah satu hari.
-![Detail Modal](docs/mockup_detail.png)
-
-### Grafik & Statistik
-Visualisasi data menggunakan Chart.js.
-![Grafik](docs/mockup_chart.png)
-
----
-
-## 6. Instalasi & Menjalankan Project
-
-Jika ingin menjalankan project ini di komputer lokal (Localhost):
-
-1.  **Clone Repository:**
-    ```bash
-    git clone [https://github.com/username-kamu/GenZehat.git](https://github.com/username-kamu/GenZehat.git)
-    cd GenZehat
-    ```
-
-2.  **Install Dependensi PHP:**
-    ```bash
-    composer install
-    ```
-
-3.  **Setup Environment:**
-    * Copy file `.env.example` menjadi `.env`.
-    * Atur konfigurasi database (DB_DATABASE, DB_USERNAME, dll).
-
-4.  **Generate Key & Migrasi Database:**
-    ```bash
-    php artisan key:generate
-    php artisan migrate
-    ```
-
-5.  **Jalankan Server:**
-    ```bash
-    php artisan serve
-    ```
-    Buka browser dan akses: `http://localhost:8000`
+### Non-Functional Requirements
+| ID | Requirement | Deskripsi |
+|----|-------------|-----------|
+| NFR-01 | Security | CSRF protection untuk semua request POST di Web |
+| NFR-02 | Performance | Update UI instan (Asynchronous) tanpa reload halaman |
+| NFR-03 | Data Integrity | Mencegah duplikasi data status harian di database |
+| NFR-04 | Usability | Desain responsif untuk penggunaan di browser mobile/PC |
 
 ---
 
-**Dibuat oleh:** [Nama Kamu] - [NIM/Identitas]
+## 📊 UML Diagrams & ERD
+
+### 1. Use Case Diagram
+```mermaid
+flowchart LR
+    User((User))
+
+    subgraph GenZehat_Web
+        UC1(Auth_System)
+        UC2(Daily_Tracker)
+        UC3(Archive_Process)
+        UC4(Personal_History_View)
+    end
+
+    User --> UC1
+    User --> UC2
+    User --> UC3
+    User --> UC4
+```
+
+### 2. Activity Diagram - Update Status (AJAX)
+```mermaid
+flowchart TD
+    Start([Start]) --> Event[Click_Status_Button]
+    Event --> Req[AJAX_Fetch_POST]
+    Req --> Route[Web_Middleware]
+    
+    Route --> Decision{Existing_Data?}
+    Decision -- Yes --> Del[Delete_Old_Status]
+    Decision -- No --> Ins[Insert_New_Status]
+    
+    Del --> Ins
+    Ins --> Res[JSON_Success_Response]
+    Res --> UI[DOM_Update_Color]
+    UI --> Finish([Finish])
+```
+
+### 3. Sequence Diagram - Personal History Retrieval
+```mermaid
+sequenceDiagram
+    autonumber
+    actor User
+    participant View as History_Page
+    participant Controller as History_Controller
+    participant DB as MySQL_DB
+
+    User->>View: Access_History_Menu
+    View->>Controller: GET_History_Request
+    
+    Note over Controller: Identify_Logged_In_User
+    Controller->>DB: Query_Histories(auth_user_id)
+    DB-->>Controller: Personal_History_Data
+    
+    Controller-->>View: Send_Data_to_Blade
+    View-->>User: Render_Personal_History_UI
+```
+
+### 4. Entity Relationship Diagram (ERD)
+```mermaid
+erDiagram
+    users ||--o{ daily_progress : "mencatat"
+    users ||--o{ histories : "memiliki"
+    users ||--o{ personal_access_tokens : "menggunakan"
+
+    users {
+        bigint id PK
+        string username
+        string password
+        string level
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    daily_progress {
+        bigint id PK
+        bigint user_id FK
+        string day_name
+        string status
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    histories {
+        bigint id PK
+        bigint user_id FK
+        int minggu_ke
+        string detail
+        date tanggal
+        int persentase
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    personal_access_tokens {
+        bigint id PK
+        string tokenable_type
+        bigint tokenable_id FK
+        string name
+        string token
+        timestamp created_at
+    }
+```
+
+---
+
+## 🎨 Mock-Up / Screenshots
+*(Letakkan file gambar Anda di folder docs/)*
+1. **Dashboard & Jadwal:** `![Dashboard](docs/mockup_dashboard.png)`
+2. **Personal History:** `![History](docs/mockup_history.png)`
+
+---
+
+## 🔄 SDLC (Software Development Life Cycle)
+
+**Metodologi:** Waterfall dengan iterasi
+
+| Phase | Aktivitas | Output |
+|-------|-----------|--------|
+| **1. Planning** | Menentukan target latihan & alur aplikasi | Requirement Doc |
+| **2. Analysis** | Merancang struktur database (Relasional) | SRS, Feature List |
+| **3. Design** | Membuat UML diagram & ERD | UML, ERD, Mockups |
+| **4. Development** | Coding Backend (Laravel) & Frontend (JS) | Source code Web |
+| **5. Testing** | Uji tombol AJAX & perhitungan persentase | Test Result |
+| **6. Deployment** | Setup server lokal & integrasi Mobile API | Live application |
+
+---
+
+## 🚀 Instalasi (Lokal)
+
+### Langkah 1: Clone Repository
+```bash
+git clone [https://github.com/username-kamu/GenZehat.git](https://github.com/username-kamu/GenZehat.git)
+cd GenZehat
+```
+
+### Langkah 2: Install Dependencies & Setup
+```bash
+composer install
+cp .env.example .env
+php artisan key:generate
+```
+
+### Langkah 3: Setup Database
+**Edit file `.env`** sesuaikan DB_DATABASE, lalu jalankan:
+```bash
+php artisan migrate
+```
+
+### Langkah 4: Jalankan Server
+```bash
+php artisan serve
+```
+Aplikasi Web: **http://localhost:8000**
+
+---
+
+## 📁 Struktur Database
+- **users**: Data akun pengguna (Username, Password, Level).
+- **daily_progress**: Status latihan harian (Day_name, Status).
+- **histories**: Arsip progres mingguan (User_id, Minggu_ke, Persentase).
+- **personal_access_tokens**: Tabel bawaan Sanctum untuk mengelola token API.
+
+---
+
+## 🌐 Web Internal Endpoints (AJAX)
+| Method | Endpoint | Deskripsi |
+|--------|----------|-----------|
+| POST | `/save-progress` | Menyimpan status harian secara real-time |
+| POST | `/save-history` | Mengarsipkan data minggu ini ke tabel history |
+
+---
+
+## 📜 License
+This project is licensed under the **MIT License**.
+
+---
+**Dibuat oleh:** Arya Sinarta Sihite
