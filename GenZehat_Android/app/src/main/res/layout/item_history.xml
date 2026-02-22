@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <View
+            android:id="@+id/viewStatusColor"
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            android:background="#CCCCCC" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvMingguKe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Minggu ke-1"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#333333"/>
+
+            <TextView
+                android:id="@+id/tvDetail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5 dari 7 Latihan Selesai"
+                android:textSize="14sp"
+                android:textColor="#666666"
+                android:layout_marginTop="4dp"/>
+
+            <TextView
+                android:id="@+id/tvTanggal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="12 Feb 2026"
+                android:textSize="12sp"
+                android:textColor="#999999"
+                android:layout_marginTop="8dp"/>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
