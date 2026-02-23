@@ -13,4 +13,6 @@ Route::post('/login', [FitnessController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
     // Route untuk Android mengambil history
     Route::get('/history', [FitnessController::class, 'getHistory']);
+
+    Route::post('/logout', [FitnessController::class, 'logout']);
 });

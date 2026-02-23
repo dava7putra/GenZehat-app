@@ -26,38 +26,44 @@ class FitnessController extends Controller
     return view('fitness', compact('histories', 'dailyProgress'));
 }
 
-    // 2. Handle Login
-    // Ganti fungsi login di FitnessController.php menjadi seperti ini:
+    // 2. Handle Login (Hybrid: Web & API)
     public function login(Request $request) {
-    $credentials = $request->validate([
-        'username' => 'required',
-        'password' => 'required'
-    ]);
+        $credentials = $request->validate([
+            'username' => 'required',
+            'password' => 'required'
+        ]);
 
-    if (Auth::attempt($credentials)) {
-        $user = Auth::user();
+        if (Auth::attempt($credentials)) {
+            $user = Auth::user();
 
-        // CEK: Jika permintaan datang dari API/Android
-        if ($request->expectsJson() || $request->is('api/*')) {
-            $token = $user->createToken('auth_token')->plainTextToken;
-            return response()->json([
-                'status' => 'success',
-                'token' => $token,
-                'message' => 'Login Berhasil'
-            ]);
+            // CEK: Jika permintaan datang dari API/Android
+            if ($request->expectsJson() || $request->is('api/*')) {
+                
+                // 🧹 FITUR AUTO-CLEAN 🧹
+                // Hapus SEMUA token lama milik user ini di database agar tidak menumpuk
+                $user->tokens()->delete();
+                
+                // Buatkan 1 token baru yang segar
+                $token = $user->createToken('auth_token')->plainTextToken;
+                
+                return response()->json([
+                    'status' => 'success',
+                    'token' => $token,
+                    'message' => 'Login Berhasil'
+                ]);
+            }
+
+            // Jika dari Browser (Web) biasa
+            $request->session()->regenerate();
+            return redirect()->intended('/');
         }
 
-        // Jika dari Browser (Web) biasa
-        $request->session()->regenerate();
-        return redirect()->intended('/');
+        // Jika gagal
+        if ($request->expectsJson() || $request->is('api/*')) {
+            return response()->json(['status' => 'error', 'message' => 'Gagal'], 401);
+        }
+        return back()->with('error', 'Login gagal!');
     }
-
-    // Jika gagal
-    if ($request->expectsJson() || $request->is('api/*')) {
-        return response()->json(['status' => 'error', 'message' => 'Gagal'], 401);
-    }
-    return back()->with('error', 'Login gagal!');
-}
 
     // 3. Handle Register
     public function register(Request $request) {
@@ -74,8 +80,21 @@ class FitnessController extends Controller
         return back()->with('success', 'Registrasi berhasil, silakan login!');
     }
 
-    // 4. Handle Logout
+    // 4. Handle Logout (Hybrid: Web & API)
     public function logout(Request $request) {
+        
+        // CEK: Jika permintaan datang dari API/Android
+        if ($request->expectsJson() || $request->is('api/*')) {
+            // Hapus Token API yang sedang dipakai Android ini
+            $request->user()->currentAccessToken()->delete();
+            
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Berhasil logout dari perangkat Mobile'
+            ], 200);
+        }
+
+        // Jika dari Browser (Web) biasa
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();

@@ -24,4 +24,10 @@ public interface ApiService {
     Call<List<HistoryModel>> getHistory(
             @Header("Authorization") String token
     );
+
+    // 👇 3. TAMBAHKAN MENU LOGOUT INI 👇
+    @POST("logout")
+    Call<Void> logoutUser(
+            @Header("Authorization") String token
+    );
 }
