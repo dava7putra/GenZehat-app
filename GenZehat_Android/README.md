@@ -32,8 +32,8 @@ Aplikasi ini terhubung langsung secara sinkron dengan *database* terpusat melalu
 | ID | User Story | Priority |
 |----|------------|----------|
 | US-01 | Sebagai user, saya ingin login menggunakan akun yang sama dengan di Web | High |
-| US-02 | Sebagai user, saya ingin menyegarkan (refresh) halaman agar bisa melihat jadwal terbaru tanpa harus keluar aplikasi | High |
-| US-03 | Sebagai user, saya ingin melihat riwayat (*History*) mingguan dengan tampilan *mobile* | Medium |
+| US-02 | Sebagai user, saya ingin menyegarkan (refresh) halaman agar bisa melihat jadwal terbaru tanpa harus keluar aplikasi | Medium |
+| US-03 | Sebagai user, saya ingin melihat riwayat (*History*) mingguan dengan tampilan *mobile* | High |
 | US-04 | Sebagai user, saya ingin bisa logout dengan aman agar akun saya tidak disalahgunakan | High |
 
 ---
