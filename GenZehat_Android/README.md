@@ -9,20 +9,20 @@
 ---
 
 ## 📖 Deskripsi
-**GenZehat (Mobile Edition)** adalah pendamping portabel untuk platform GenZehat Web. Aplikasi Android ini dirancang khusus agar pengguna dapat memantau jadwal dan riwayat latihan *Calisthenics* mereka langsung dari genggaman tangan, kapan pun dan di mana pun.
+**GenZehat (Mobile Edition)** adalah pendamping portabel untuk platform GenZehat Web. Aplikasi Android ini dirancang khusus agar pengguna dapat memantau riwayat latihan *Calisthenics* mereka langsung dari genggaman tangan, kapan pun dan di mana pun.
 
 Aplikasi ini tidak berdiri sendiri, melainkan terhubung langsung secara sinkron dengan *database* terpusat melalui integrasi **REST API** (didukung oleh Laravel Sanctum dari sisi *backend*).
 
 ### Tujuan Utama:
 - Menghadirkan antarmuka pengguna (UI) seluler yang responsif dan mudah dinavigasi.
-- Memungkinkan pengguna melakukan *checklist* latihan harian langsung dari *smartphone*.
+- Memungkinkan pengguna melakukan *checklist* latihan harian langsung dari *smartphone* / *emulator*.
 - Menampilkan riwayat latihan (Personal History) dengan *layout* khusus layar *mobile*.
-- Memastikan data di HP selalu sinkron *real-time* dengan data di Web.
+- Memastikan data di aplikasi selalu sinkron *real-time* dengan data di Web.
 
 ### Tech Stack (Mobile):
 - **IDE:** Android Studio
 - **UI/UX:** XML Layouts & Material Design
-- **Network/API:** Retrofit / Volley / HttpURLConnection (Penghubung ke API Laravel)
+- **Network/API:** Retrofit / Volley (Penghubung ke API Laravel)
 - **Local Storage:** SharedPreferences (Untuk menyimpan Token Sesi/Login)
 
 ---
@@ -31,10 +31,10 @@ Aplikasi ini tidak berdiri sendiri, melainkan terhubung langsung secara sinkron 
 
 | ID | User Story | Priority |
 |----|------------|----------|
-| US-01 | Sebagai user, saya ingin login di HP menggunakan akun yang sama dengan di Web | High |
-| US-02 | Sebagai user, saya ingin melihat jadwal latihan hari ini langsung saat membuka aplikasi | High |
-| US-03 | Sebagai user, saya ingin mencentang status latihan di HP dengan sekali *tap* | High |
-| US-04 | Sebagai user, saya ingin melihat riwayat (*History*) mingguan dengan tampilan yang nyaman di HP | Medium |
+| US-01 | Sebagai user, saya ingin login menggunakan akun yang sama dengan di Web | High |
+| US-02 | Sebagai user, saya ingin melihat jadwal latihan hari ini saat membuka aplikasi | High |
+| US-03 | Sebagai user, saya ingin mencentang status latihan di aplikasi dengan sekali *tap* | High |
+| US-04 | Sebagai user, saya ingin melihat riwayat (*History*) mingguan dengan tampilan *mobile* | Medium |
 
 ---
 
@@ -43,41 +43,23 @@ Aplikasi ini tidak berdiri sendiri, melainkan terhubung langsung secara sinkron 
 ### Functional Requirements
 | ID | Feature | Deskripsi | Status |
 |----|---------|-----------|--------|
-| FR-01 | API Authentication | Login via endpoint API dan menyimpan *Bearer Token* di perangkat | ✅ Done |
+| FR-01 | API Authentication | Login via endpoint API dan menyimpan *Bearer Token* secara lokal | ✅ Done |
 | FR-02 | Mobile Daily Tracker | Tombol interaktif untuk *update* status latihan ke *server* | ✅ Done |
 | FR-03 | Mobile History View | *RecyclerView* / *ListView* untuk menampilkan riwayat personal | ✅ Done |
-| FR-04 | Logout System | Menghapus token dari HP dan memutuskan sesi API | ✅ Done |
+| FR-04 | Logout System | Menghapus token dari aplikasi dan memutuskan sesi API | ✅ Done |
 
 ### Non-Functional Requirements
 | ID | Requirement | Deskripsi |
 |----|-------------|-----------|
-| NFR-01 | UI Responsiveness | *Layout* menyesuaikan berbagai ukuran layar HP (hanya *Portrait*) |
-| NFR-02 | Network Handling | Menampilkan pesan *error* jika HP tidak ada koneksi internet |
-| NFR-03 | Security | Token API disimpan dengan aman di *SharedPreferences* |
+| NFR-01 | UI Responsiveness | *Layout* menyesuaikan ukuran layar (dikunci pada posisi *Portrait*) |
+| NFR-02 | Network Handling | Komunikasi jaringan berjalan lancar via IP lokal (LAN/WLAN) |
+| NFR-03 | Security | Token API disimpan dengan aman menggunakan *SharedPreferences* |
 
 ---
 
 ## 📊 UML Diagrams (Mobile Architecture)
 
-### 1. Use Case Diagram
-```mermaid
-flowchart LR
-    User((User))
-
-    subgraph GenZehat_Android
-        UC1(Login_via_API)
-        UC2(Lihat_Jadwal_Harian)
-        UC3(Update_Status_Latihan)
-        UC4(Lihat_Personal_History)
-    end
-
-    User --> UC1
-    User --> UC2
-    User --> UC3
-    User --> UC4
-```
-
-### 2. Activity Diagram - Interaksi API Latihan
+### 1. Activity Diagram - Interaksi API Latihan
 ```mermaid
 flowchart TD
     Start([Buka_Aplikasi]) --> CekToken{Punya_Token?}
@@ -97,7 +79,7 @@ flowchart TD
     Toast --> Finish
 ```
 
-### 3. Sequence Diagram - Komunikasi Mobile ke Web API
+### 2. Sequence Diagram - Komunikasi Mobile ke Web API
 ```mermaid
 sequenceDiagram
     autonumber
@@ -125,40 +107,49 @@ sequenceDiagram
 
 <div align="center">
 
-### Tampilan Login (Mobile)
-*(Tambahkan gambar nanti)*
+### Tampilan Login
+<img src="images/1android.jpg" width="300">
 <br><br>
 
-### Dashboard & Tracker (Mobile)
-*(Tambahkan gambar nanti)*
+### Dashboard & Tracker
+<img src="images/2android.jpg" width="300">
 <br><br>
 
-### Personal History (Mobile)
-*(Tambahkan gambar nanti)*
+### Personal History
+<img src="images/3android.jpg" width="300">
 <br><br>
 
 </div>
 
 ---
 
-## 🚀 Panduan Build & Instalasi (Developer)
+## 🚀 Panduan Build & Instalasi (Local Network)
 
-### Langkah 1: Persiapan Web Server Lokal
-Karena Android ini mengambil data dari API, pastikan aplikasi web GenZehat berjalan terlebih dahulu di laptop (misal: `http://127.0.0.1:8000`).
+Dikarenakan proses pengujian menggunakan **Emulator Eksternal** (bukan AVD bawaan Android Studio), arsitektur *network* yang digunakan berbasis IP Lokal (LAN/WLAN). Ikuti panduan berikut agar aplikasi bisa terhubung ke server Laravel:
 
-### Langkah 2: Buka Proyek di Android Studio
-1. Buka Android Studio.
-2. Klik **Open**, lalu pilih folder `genzehat-android`.
-3. Tunggu hingga proses **Gradle Sync** selesai 100%.
+### Langkah 1: Jalankan Web Server Laravel (Akses Eksternal)
+Agar server web bisa diakses oleh emulator dari luar `localhost`, buka terminal pada folder **GenZehat Web** Anda dan jalankan perintah berikut:
+```bash
+php artisan serve --host=0.0.0.0 --port=8000
+```
 
-### Langkah 3: Konfigurasi Base URL API
-Jika menjalankan aplikasi di **Emulator Android**, ubah URL API di dalam *source code* (misalnya di file `RetrofitClient.java` atau *Class Config*) dari `localhost` menjadi IP khusus Emulator:
-- Ganti `http://127.0.0.1:8000` menjadi **`http://10.0.2.2:8000`**
+### Langkah 2: Cek IP Address (IPv4) Laptop Anda
+1. Buka CMD (Command Prompt) di Windows.
+2. Ketik perintah `ipconfig` dan tekan Enter.
+3. Cari baris **IPv4 Address** (Contoh: `192.168.1.x` atau `192.168.100.x`).
+4. Catat IP tersebut.
 
-*(Catatan: Jika menguji menggunakan HP asli yang dicolok kabel USB, gunakan IP Address WiFi laptop Anda, misal: `http://192.168.1.5:8000`)*
+### Langkah 3: Konfigurasi Base URL di Android
+1. Buka *source code* Android Anda (misalnya di file `RetrofitClient`, `ApiConfig`, atau `Constants`).
+2. Jangan gunakan `localhost` atau `10.0.2.2`. Ganti *Base URL* tersebut menggunakan IPv4 yang sudah dicatat tadi.
+3. **Format yang benar:** `http://[IP_Laptop_Anda]:8000/api/` (Contoh: `http://192.168.1.5:8000/api/`).
 
-### Langkah 4: Jalankan Aplikasi (Run)
-Klik tombol ▶️ **Run 'app'** di Android Studio untuk memasang aplikasi ke Emulator atau *Smartphone* fisik.
+### Langkah 4: Compile & Jalankan di Emulator Eksternal
+1. Pastikan Emulator Eksternal Anda sudah berjalan.
+2. Di Android Studio, pastikan nama emulator Anda sudah muncul di daftar perangkat terhubung (kiri atas tombol Play).
+3. Klik ▶️ **Run 'app'** untuk menginstal aplikasi (APK) langsung ke dalam emulator tersebut.
+
+*(Catatan: Pastikan firewall Windows Anda mengizinkan koneksi masuk pada port 8000 agar emulator tidak diblokir saat mengambil data API).*
 
 ---
 **Dibuat oleh:** Dava Anugrah Putra
