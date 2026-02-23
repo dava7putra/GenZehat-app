@@ -58,8 +58,6 @@ Aplikasi ini terhubung langsung secara sinkron dengan *database* terpusat melalu
 
 ## 📊 UML Diagrams (Mobile Architecture)
 
-## 📊 UML Diagrams (Mobile Architecture)
-
 ### 1. Activity Diagram - Alur Penggunaan Aplikasi (Mobile)
 Diagram ini menggambarkan alur aktivitas pengguna dari pertama kali membuka aplikasi, melakukan pengecekan token, hingga melakukan *refresh* data atau *logout*.
 
