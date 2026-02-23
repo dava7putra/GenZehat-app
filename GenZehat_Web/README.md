@@ -173,9 +173,11 @@ erDiagram
 
 ## 🎨 Mock-Up / Screenshots
 *(Letakkan file gambar Anda di folder docs/)*
-1. **Dashboard & Jadwal:** `![Dashboard](docs/mockup_dashboard.png)`
-2. **Personal History:** `![History](docs/mockup_history.png)`
-
+1. **Tampilan Login:** ![Tampilan Login](images/1web.jpg)
+2. **Dashboard Utama:** ![Dashboard Utama](images/2web.jpg)
+3. **Jadwal Latihan:** ![Jadwal Latihan](images/3web.jpg)
+4. **Histori Latihan:** ![Histori Latihan](images/4web.jpg)
+5. **Pengaturan:** ![Pengaturan](images/5web.jpg)
 ---
 
 ## 🔄 SDLC (Software Development Life Cycle)
