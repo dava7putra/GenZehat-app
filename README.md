@@ -1,241 +1,87 @@
-# 📚 Dokumentasi Project (Progress Report)
+# 🌟 GenZehat - Calisthenics Workout Tracker (Fullstack Project)
 
-## GenZehat - Calisthenics Workout Tracker (Web Version)
-![Laravel](https://img.shields.io/badge/Laravel-11-red?logo=laravel)
-![PHP](https://img.shields.io/badge/PHP-8.2+-blue?logo=php)
-![JavaScript](https://img.shields.io/badge/JavaScript-Fetch_API-F7DF1E?logo=javascript&logoColor=black)
-![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?logo=mysql&logoColor=white)
-![Bootstrap](https://img.shields.io/badge/Bootstrap-5.x-7952B3?logo=bootstrap)
+![Laravel](https://img.shields.io/badge/Web_Backend-Laravel_10-FF2D20?logo=laravel&logoColor=white)
+![Android](https://img.shields.io/badge/Mobile_App-Android_Java-3DDC84?logo=android&logoColor=white)
+![MySQL](https://img.shields.io/badge/Database-MySQL-4479A1?logo=mysql&logoColor=white)
 
----
+Selamat datang di repositori resmi **GenZehat**! 
+GenZehat adalah sebuah platform ekosistem ganda (*Web* dan *Mobile*) yang dirancang khusus untuk membantu Anda melacak, mencatat, dan mengelola jadwal latihan *Calisthenics* (kalistenik) secara disiplin dan terstruktur.
 
-## 📖 Deskripsi
-GenZehat adalah platform pelacak kebugaran (Fitness Tracker) berbasis web yang dirancang untuk membantu pengguna memantau progres latihan *Calisthenics* (olahraga beban tubuh) secara terstruktur. Aplikasi ini fokus pada pengelolaan jadwal latihan pribadi dan pengarsipan progres mingguan untuk memantau konsistensi pengguna secara mandiri.
-
-### Tujuan Utama:
-- Menyediakan jadwal latihan beban tubuh (Bodyweight) yang terstruktur.
-- Membantu pengguna memantau konsistensi melalui fitur pencatatan harian interaktif.
-- Mendukung pemula hingga profesional dengan sistem Level Latihan.
-- Menyediakan riwayat progres (Personal History) untuk evaluasi latihan mandiri.
-- Menyediakan basis data terpusat yang terintegrasi dengan aplikasi Android via REST API.
-
-### Tech Stack:
-- **Backend:** Laravel 11
-- **Frontend:** Blade Templates + Vanilla JavaScript (Fetch API)
-- **Database:** MySQL 8.0
-- **Authentication:** Laravel Session & CSRF Protection
-- **Cross-Platform Support:** Laravel Sanctum (Mendukung endpoint API untuk Mobile)
+Proyek ini terdiri dari dua bagian utama yang saling terhubung secara *real-time*:
+1. **GenZehat Web:** Berfungsi sebagai *dashboard* utama dan *server* penyedia API (dibangun dengan Laravel).
+2. **GenZehat Mobile:** Aplikasi pendamping di *smartphone* Android agar Anda bisa melihat jadwal dan riwayat latihan dari mana saja.
 
 ---
 
-## 📋 User Story
-
-| ID | User Story | Priority |
-|----|------------|----------|
-| US-01 | Sebagai user, saya ingin membuat akun agar progres latihan tersimpan secara privat | High |
-| US-02 | Sebagai user, saya ingin mencentang jadwal harian (Selesai/Terlewat) secara instan | High |
-| US-03 | Sebagai user, saya ingin mengarsipkan progres minggu ini untuk melihat statistik keberhasilan | High |
-| US-04 | Sebagai user, saya ingin mengganti tingkat kesulitan (Pemula/Menengah/Pro) | Medium |
-| US-05 | Sebagai user, saya ingin melihat daftar riwayat (History) mingguan yang sudah saya selesaikan | Medium |
+## ✨ Fitur Utama
+* **Satu Akun untuk Semua:** Cukup buat akun di Web, dan gunakan akun yang sama untuk *login* di aplikasi Android.
+* **Sinkronisasi Real-time:** Data riwayat latihan yang Anda selesaikan di Web akan langsung muncul di HP Anda.
+* **Sistem Keamanan Token:** Aplikasi mobile dilengkapi fitur *Auto-Clean Token* dan *Secure Logout* untuk menjaga keamanan data Anda.
+* **Antarmuka Responsif:** Nyaman dibuka di layar komputer (Web) maupun digenggam di tangan (Android).
 
 ---
 
-## 📝 SRS - Feature List
+## 🚀 Panduan Instalasi & Uji Coba (Untuk Pengguna Umum)
 
-### Functional Requirements
-| ID | Feature | Deskripsi | Status |
-|----|---------|-----------|--------|
-| FR-01 | Web Authentication | Login, Register, Logout menggunakan Laravel Session | ✅ Done |
-| FR-02 | Daily Progress Tracker | Checklist harian interaktif via AJAX Fetch API | ✅ Done |
-| FR-03 | Level Management | Pilihan level latihan (Pemula, Menengah, Pro) | ✅ Done |
-| FR-04 | Workout Details | Modal popup berisi instruksi gerakan dan repetisi | ✅ Done |
-| FR-05 | Personal Archiving | Fitur "Save & Exit" untuk mengarsipkan statistik mingguan | ✅ Done |
-| FR-06 | History View | Halaman khusus untuk melihat riwayat progres pribadi | ✅ Done |
+Ingin mencoba menjalankan GenZehat di laptop dan HP Anda sendiri? Sangat bisa! Ikuti langkah-langkah mudah di bawah ini.
 
-### Non-Functional Requirements
-| ID | Requirement | Deskripsi |
-|----|-------------|-----------|
-| NFR-01 | Security | CSRF protection untuk semua request POST di Web |
-| NFR-02 | Performance | Update UI instan (Asynchronous) tanpa reload halaman |
-| NFR-03 | Data Integrity | Mencegah duplikasi data status harian di database |
-| NFR-04 | Usability | Desain responsif untuk penggunaan di browser PC |
+### TAHAP 1: Menjalankan Server Web (Wajib)
+Aplikasi Android tidak akan bisa berjalan jika *server* Web ini belum dinyalakan.
 
----
+**Persiapan Alat:**
+Pastikan laptop Anda sudah terinstal **XAMPP** (atau Laragon), **PHP**, dan **Composer**.
 
-## 📊 UML Diagrams & ERD
-
-### 1. Use Case Diagram
-```mermaid
-flowchart LR
-    User((User))
-
-    subgraph GenZehat_Web
-        UC1(Auth_System)
-        UC2(Daily_Tracker)
-        UC3(Archive_Process)
-        UC4(Personal_History_View)
-    end
-
-    User --> UC1
-    User --> UC2
-    User --> UC3
-    User --> UC4
-```
-
-### 2. Activity Diagram - Update Status (AJAX)
-```mermaid
-flowchart TD
-    Start([Start]) --> Event[Click_Status_Button]
-    Event --> Req[AJAX_Fetch_POST]
-    Req --> Route[Web_Middleware]
-    
-    Route --> Decision{Existing_Data?}
-    Decision -- Yes --> Del[Delete_Old_Status]
-    Decision -- No --> Ins[Insert_New_Status]
-    
-    Del --> Ins
-    Ins --> Res[JSON_Success_Response]
-    Res --> UI[DOM_Update_Color]
-    UI --> Finish([Finish])
-```
-
-### 3. Sequence Diagram - Personal History Retrieval
-```mermaid
-sequenceDiagram
-    autonumber
-    actor User
-    participant Browser as Web_Browser (JavaScript)
-    participant Laravel as Laravel_Controller (web.php)
-    participant DB as MySQL_Database
-
-    User->>Browser: Klik tombol status "Selesai" (misal: Senin)
-    
-    Note over Browser, Laravel: Proses Asynchronous (AJAX)
-    Browser->>Laravel: POST /save-progress (Membawa Data & CSRF Token)
-    
-    Laravel->>Laravel: Validasi Session & CSRF Token
-    
-    Laravel->>DB: Cek & Update tabel `daily_progress`
-    DB-->>Laravel: Konfirmasi data tersimpan
-    
-    Laravel-->>Browser: Kembalikan Response JSON {success: true}
-    
-    Browser-->>User: Ubah warna tombol jadi Hijau seketika (Tanpa Reload)
-```
-
-### 4. Entity Relationship Diagram (ERD)
-```mermaid
-erDiagram
-    users ||--o{ daily_progress : "mencatat"
-    users ||--o{ histories : "memiliki"
-    users ||--o{ personal_access_tokens : "menggunakan"
-
-    users {
-        bigint id PK
-        string username
-        string password
-        string level
-        timestamp created_at
-        timestamp updated_at
-    }
-
-    daily_progress {
-        bigint id PK
-        bigint user_id FK
-        string day_name
-        string status
-        timestamp created_at
-        timestamp updated_at
-    }
-
-    histories {
-        bigint id PK
-        bigint user_id FK
-        int minggu_ke
-        string detail
-        date tanggal
-        int persentase
-        timestamp created_at
-        timestamp updated_at
-    }
-
-    personal_access_tokens {
-        bigint id PK
-        string tokenable_type
-        bigint tokenable_id FK
-        string name
-        string token
-        timestamp created_at
-    }
-```
+**Langkah-langkah:**
+1. Hidupkan modul **Apache** dan **MySQL** di aplikasi XAMPP Anda.
+2. Buat database baru di `localhost/phpmyadmin` dengan nama: **`genzehat`**
+3. Buka Terminal/CMD, lalu unduh proyek ini:
+   ```bash
+   git clone [https://github.com/USERNAME_GITHUB_ANDA/NAMA_REPO_ANDA.git](https://github.com/USERNAME_GITHUB_ANDA/NAMA_REPO_ANDA.git)
+   ```
+   *(Catatan: Ganti URL di atas dengan link repositori ini).*
+4. Masuk ke folder web-nya: `cd NAMA_REPO_ANDA/genzehat-web`
+5. Instal komponen yang dibutuhkan:
+   ```bash
+   composer install
+   ```
+6. Salin file pengaturan lingkungan:
+   ```bash
+   cp .env.example .env
+   ```
+   *(Buka file `.env` yang baru muncul, pastikan `DB_DATABASE=genzehat`).*
+7. Kunci aplikasi dan buat kerangka database:
+   ```bash
+   php artisan key:generate
+   php artisan migrate
+   ```
+8. **Jalankan Server (Penting):** Agar HP Anda bisa terhubung ke laptop, jalankan perintah ini:
+   ```bash
+   php artisan serve --host=0.0.0.0 --port=8000
+   ```
+   *Biarkan CMD ini tetap terbuka!* Sekarang Anda bisa membuka webnya di browser laptop dengan mengetik: `http://localhost:8000`
 
 ---
 
-## 🎨 Mock-Up / Screenshots
-*(Letakkan file gambar Anda di folder docs/)*
-1. **Dashboard & Jadwal:** `![Dashboard](docs/mockup_dashboard.png)`
-2. **Personal History:** `![History](docs/mockup_history.png)`
+### TAHAP 2: Menjalankan Aplikasi Mobile Android
+Setelah server menyala, sekarang saatnya memasang aplikasinya di HP/Emulator Anda!
+
+**Cara Instan (Via APK):**
+1. Buka menu **Releases** di halaman GitHub ini, atau cari file bernama **`GenZehat.apk`**.
+2. Unduh file APK tersebut.
+3. Kirim ke HP Android Anda dan lakukan Instalasi (Izinkan "Install from Unknown Sources").
+4. Buka aplikasi, lalu coba *Login* menggunakan akun yang sudah Anda daftarkan di Web.
+
+> **⚠️ CATATAN JARINGAN (PENTING):**
+> Agar aplikasi Android bisa terhubung ke laptop Anda, pastikan HP dan Laptop Anda **terhubung ke jaringan WiFi yang sama**. Jika file APK gagal terhubung (karena perbedaan IP Address lokal), Anda harus melakukan *Build* ulang secara mandiri menggunakan Android Studio (Panduan lengkapnya ada di dalam folder Android).
 
 ---
 
-## 🔄 SDLC (Software Development Life Cycle)
+## 📂 Struktur Repositori
+Repositori ini dibagi menjadi dua folder utama untuk memudahkan pengembangan:
+* 📁 **`/genzehat-web`** : Berisi *source code* Laravel untuk tampilan *website*, database, dan sistem *Backend/API*.
+* 📁 **`/genzehat-android`** : Berisi *source code* Java/XML untuk aplikasi *Mobile* Android.
 
-**Metodologi:** Waterfall dengan iterasi
-
-| Phase | Aktivitas | Output |
-|-------|-----------|--------|
-| **1. Planning** | Menentukan target latihan & alur aplikasi | Requirement Doc |
-| **2. Analysis** | Merancang struktur database (Relasional) | SRS, Feature List |
-| **3. Design** | Membuat UML diagram & ERD | UML, ERD, Mockups |
-| **4. Development** | Coding Backend (Laravel) & Frontend (JS) | Source code Web |
-| **5. Testing** | Uji tombol AJAX & perhitungan persentase | Test Result |
-| **6. Deployment** | Setup server lokal & integrasi Mobile API | Live application |
+*(Setiap folder memiliki `README.md` spesifiknya masing-masing untuk panduan teknis lanjutan).*
 
 ---
-
-## 🚀 Instalasi (Lokal)
-
-### Langkah 1: Clone Repository
-```bash
-git clone [https://github.com/username-kamu/GenZehat.git](https://github.com/username-kamu/GenZehat.git)
-cd GenZehat
-```
-
-### Langkah 2: Install Dependencies & Setup
-```bash
-composer install
-cp .env.example .env
-php artisan key:generate
-```
-
-### Langkah 3: Setup Database
-**Edit file `.env`** sesuaikan DB_DATABASE, lalu jalankan:
-```bash
-php artisan migrate
-```
-
-### Langkah 4: Jalankan Server
-```bash
-php artisan serve
-```
-Aplikasi Web: **http://localhost:8000**
-
----
-
-## 📁 Struktur Database
-- **users**: Data akun pengguna (Username, Password, Level).
-- **daily_progress**: Status latihan harian (Day_name, Status).
-- **histories**: Arsip progres mingguan (User_id, Minggu_ke, Persentase).
-- **personal_access_tokens**: Tabel bawaan Sanctum untuk mengelola token API.
-
----
-
-## 🌐 Web Internal Endpoints (AJAX)
-| Method | Endpoint | Deskripsi |
-|--------|----------|-----------|
-| POST | `/save-progress` | Menyimpan status harian secara real-time |
-| POST | `/save-history` | Mengarsipkan data minggu ini ke tabel history |
-
----
-**Dibuat oleh:** Dava Anugrah Putra
-
+**Developed with ☕ by [Dava Anugrah Putra]**
