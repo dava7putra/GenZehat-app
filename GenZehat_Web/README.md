@@ -169,16 +169,31 @@ erDiagram
     }
 ```
 
----
-
 ## 🎨 Mock-Up / Screenshots
-*(Letakkan file gambar Anda di folder docs/)*
-1. **Tampilan Login:** ![Tampilan Login](images/1web.jpg)
-2. **Dashboard Utama:** ![Dashboard Utama](images/2web.jpg)
-3. **Jadwal Latihan:** ![Jadwal Latihan](images/3web.jpg)
-4. **Histori Latihan:** ![Histori Latihan](images/4web.jpg)
-5. **Pengaturan:** ![Pengaturan](images/5web.jpg)
----
+
+<div align="center">
+
+### Tampilan Login
+<img src="images/1web.jpg" width="400">
+<br><br>
+
+### Dashboard Utama
+<img src="images/2web.jpg" width="400">
+<br><br>
+
+### Jadwal Latihan
+<img src="images/3web.jpg" width="400">
+<br><br>
+
+### Histori Latihan
+<img src="images/4web.jpg" width="400">
+<br><br>
+
+### Pengaturan
+<img src="images/5web.jpg" width="400">
+<br><br>
+
+</div>
 
 ## 🔄 SDLC (Software Development Life Cycle)
 
