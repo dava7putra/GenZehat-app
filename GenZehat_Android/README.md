@@ -32,9 +32,7 @@ Aplikasi ini tidak berdiri sendiri, melainkan terhubung langsung secara sinkron 
 | ID | User Story | Priority |
 |----|------------|----------|
 | US-01 | Sebagai user, saya ingin login menggunakan akun yang sama dengan di Web | High |
-| US-02 | Sebagai user, saya ingin melihat jadwal latihan hari ini saat membuka aplikasi | High |
-| US-03 | Sebagai user, saya ingin mencentang status latihan di aplikasi dengan sekali *tap* | High |
-| US-04 | Sebagai user, saya ingin melihat riwayat (*History*) mingguan dengan tampilan *mobile* | Medium |
+| US-02 | Sebagai user, saya ingin melihat riwayat (*History*) mingguan dengan tampilan *mobile* | Medium |
 
 ---
 
