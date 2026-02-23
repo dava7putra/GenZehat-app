@@ -94,31 +94,42 @@ flowchart TD
 
 ---
 
-## 🚀 Panduan Build & Instalasi (Local Network)
+## 🚀 Panduan Penggunaan & Instalasi
 
-Dikarenakan proses pengujian menggunakan **Emulator Eksternal** (bukan AVD bawaan Android Studio), arsitektur *network* yang digunakan berbasis IP Lokal (LAN/WLAN). Ikuti panduan berikut agar aplikasi bisa terhubung ke server Laravel:
+Ada dua cara untuk mencoba aplikasi GenZehat Mobile, yaitu cara instan menggunakan APK (untuk pengguna umum) atau cara kompilasi manual (untuk developer).
 
-### Langkah 1: Jalankan Web Server Laravel (Akses Eksternal)
-Agar server web bisa diakses oleh emulator dari luar `localhost`, buka terminal pada folder **GenZehat Web** Anda dan jalankan perintah berikut:
+### 🟢 CARA 1: Jalur Instan (Menggunakan File APK)
+Bagi Anda yang tidak memiliki Android Studio dan menggunakan Emulator Eksternal (seperti LDPlayer, Nox, Bluestacks) atau HP Android langsung, ikuti langkah ini:
+
+**1. Jalankan Server Backend (Laravel)**
+Buka folder proyek **GenZehat Web** di CMD/Terminal laptop Anda, lalu jalankan perintah ini agar server terbuka untuk jaringan luar:
 ```bash
 php artisan serve --host=0.0.0.0 --port=8000
 ```
 
-### Langkah 2: Cek IP Address (IPv4) Laptop Anda
-1. Buka CMD (Command Prompt) di Windows.
-2. Ketik perintah `ipconfig` dan tekan Enter.
-3. Cari baris **IPv4 Address** (Contoh: `192.168.1.x`).
-4. Catat IP tersebut.
+**2. Unduh dan Install Aplikasi**
+- Cari dan unduh file **`GenZehat.apk`** yang ada di halaman utama repository ini (atau di menu *Releases*).
+- **Di Emulator Eksternal (LDPlayer, dll):** Cukup seret (*drag and drop*) file APK tersebut dari komputer Anda ke dalam jendela emulator yang sedang menyala. Aplikasi akan terinstal otomatis.
 
-### Langkah 3: Konfigurasi Base URL di Android
-1. Buka file *source code* (misal `ApiClient.java`).
-2. Ganti *Base URL* tersebut menggunakan IPv4 yang sudah dicatat tadi.
-3. **Format yang benar:** `http://[IP_Laptop_Anda]:8000/api/` (Contoh: `http://192.168.1.5:8000/api/`).
+> **⚠️ PERHATIAN PENTING:** > File APK yang tersedia mungkin telah dikonfigurasi (*hardcoded*) menggunakan IP Address lokal milik developer asli. Jika aplikasi gagal terhubung ke server/tidak bisa login, Anda **wajib** menggunakan CARA 2 di bawah ini untuk menyesuaikan IP dengan jaringan WiFi Anda sendiri.
 
-### Langkah 4: Compile & Jalankan di Emulator Eksternal
-1. Pastikan Emulator Eksternal Anda sudah berjalan.
-2. Di Android Studio, pastikan nama emulator Anda sudah muncul di daftar perangkat terhubung (kiri atas tombol Play).
-3. Klik ▶️ **Run 'app'** untuk menginstal aplikasi.
+---
+
+### 🛠️ CARA 2: Jalur Developer (Kompilasi Manual via Android Studio)
+Jika Anda ingin mengembangkan lebih lanjut atau perlu mengubah konfigurasi IP *server* lokal Anda sendiri:
+
+**1. Cek IP Address (IPv4) Komputer Anda**
+- Buka CMD (Command Prompt) di Windows.
+- Ketik `ipconfig` dan cari baris **IPv4 Address** (Contoh: `192.168.1.5`).
+
+**2. Ubah Base URL di Source Code**
+- Buka proyek ini menggunakan **Android Studio**.
+- Cari file konfigurasi API (misal: `ApiClient.java`).
+- Ganti *Base URL* dengan IPv4 komputer Anda. Format yang benar: `http://[IP_Komputer_Anda]:8000/api/` (Contoh: `http://192.168.1.5:8000/api/`).
+
+**3. Build & Run**
+- Pastikan Emulator (atau HP fisik Anda) sudah terhubung dan terdeteksi di Android Studio.
+- Klik tombol ▶️ **Run 'app'** (atau tekan `Shift + F10`) untuk mengompilasi kode dan menjalankan aplikasi secara langsung.
 
 ---
 **Dibuat oleh:** Dava Anugrah Putra
