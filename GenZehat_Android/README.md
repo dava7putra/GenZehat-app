@@ -58,22 +58,74 @@ Aplikasi ini terhubung langsung secara sinkron dengan *database* terpusat melalu
 
 ## 📊 UML Diagrams (Mobile Architecture)
 
-### 1. Activity Diagram - Alur Refresh & Logout
+## 📊 UML Diagrams (Mobile Architecture)
+
+### 1. Activity Diagram - Alur Penggunaan Aplikasi (Mobile)
+Diagram ini menggambarkan alur aktivitas pengguna dari pertama kali membuka aplikasi, melakukan pengecekan token, hingga melakukan *refresh* data atau *logout*.
+
 ```mermaid
 flowchart TD
-    Start([Buka_Aplikasi]) --> Login[Login_via_API]
-    Login --> Dashboard[Tampil_Halaman_History]
+    Start([Buka_Aplikasi]) --> CekToken{Punya Token\ndi Intent?}
     
-    Dashboard --> Pilihan{Aksi_User}
+    CekToken -- "Tidak / Kosong" --> LayarLogin[Tampil Layar Login]
+    LayarLogin --> InputData[Input Username & Password]
+    InputData --> HitLogin[Panggil API /login]
+    HitLogin --> CekLogin{Login Valid?}
+    CekLogin -- "Gagal" --> ToastError[Tampil Error] --> LayarLogin
+    CekLogin -- "Sukses" --> SimpanToken[Simpan Token & Buka MainActivity] --> FetchAwal
     
-    Pilihan -- Tekan_Refresh --> FetchAPI[Tembak_API_GET_History]
-    FetchAPI --> UpdateUI[Perbarui_RecyclerView]
-    UpdateUI --> Dashboard
+    CekToken -- "Ya / Ada" --> FetchAwal[Panggil API /history]
     
-    Pilihan -- Tekan_Logout --> DelToken[Tembak_API_POST_Logout]
-    DelToken --> HapusServer[Hancurkan_Token_di_Laravel]
-    HapusServer --> ArahkanLogin[Kembali_ke_Halaman_Login]
-    ArahkanLogin --> Selesai([Selesai])
+    FetchAwal --> TampilData[Tampilkan Data di RecyclerView]
+    
+    TampilData --> Idle{Aksi User di\nDashboard?}
+    
+    Idle -- "Tekan Refresh" --> FetchUlang[Panggil Ulang API /history]
+    FetchUlang --> TampilData
+    
+    Idle -- "Tekan Logout" --> HitLogout[Panggil API /logout]
+    HitLogout --> HapusTokenServer[Hapus Token di Server Laravel]
+    HapusTokenServer --> PindahLogin[Lempar kembali ke Layar Login]
+    PindahLogin --> Selesai([Selesai])
+```
+
+### 2. Sequence Diagram - Komunikasi API Terpusat
+Diagram ini memetakan bagaimana aplikasi Android berkomunikasi dua arah dengan server Laravel menggunakan metode *REST API* dan *Bearer Token*.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor User
+    participant App as Android App (Retrofit)
+    participant API as Laravel Web API
+    participant DB as MySQL Database
+
+    %% Proses Login
+    User->>App: Input Username & Password
+    App->>API: POST /api/login (credentials)
+    API->>DB: Validasi User
+    DB-->>API: Data Cocok
+    API->>DB: Hapus Token Lama (Auto-Clean) & Buat Baru
+    API-->>App: Return JSON (Token Sanctum)
+    Note over App: Simpan Token di Intent
+
+    %% Proses Refresh Data
+    User->>App: Buka Dashboard / Tekan Refresh
+    App->>API: GET /api/history (Bearer Token)
+    API->>API: Validasi Token Sanctum
+    API->>DB: Query tabel histories
+    DB-->>API: Return Array Data
+    API-->>App: Return JSON Array
+    App-->>User: Render ke RecyclerView
+
+    %% Proses Logout
+    User->>App: Tekan Tombol Logout
+    App->>API: POST /api/logout (Bearer Token)
+    API->>DB: Hapus Token yang sedang aktif
+    DB-->>API: Token Dihapus
+    API-->>App: Return JSON Success
+    Note over App: Hapus sesi Intent & Pindah ke Login
+    App-->>User: Tampilkan Halaman Login
 ```
 
 ---
