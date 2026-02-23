@@ -160,11 +160,11 @@ sequenceDiagram
 <div align="center">
 
 ### Tampilan Login
-<img src="images/1mobile.jpg" width="300">
+<img src="1mobile.jpg" width="300">
 <br><br>
 
 ### Dashboard Histori
-<img src="images/2mobile.jpg" width="300">
+<img src="2mobile.jpg" width="300">
 <br><br>
 
 </div>
