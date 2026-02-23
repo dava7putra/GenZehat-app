@@ -9,21 +9,21 @@
 ---
 
 ## 📖 Deskripsi
-**GenZehat (Mobile Edition)** adalah pendamping portabel untuk platform GenZehat Web. Aplikasi Android ini dirancang khusus agar pengguna dapat memantau riwayat latihan *Calisthenics* mereka langsung dari genggaman tangan, kapan pun dan di mana pun.
+**GenZehat (Mobile Edition)** adalah pendamping portabel untuk platform GenZehat Web. Aplikasi Android ini dirancang khusus agar pengguna dapat memantau jadwal dan riwayat latihan *Calisthenics* mereka langsung dari genggaman tangan.
 
-Aplikasi ini tidak berdiri sendiri, melainkan terhubung langsung secara sinkron dengan *database* terpusat melalui integrasi **REST API** (didukung oleh Laravel Sanctum dari sisi *backend*).
+Aplikasi ini terhubung langsung secara sinkron dengan *database* terpusat melalui integrasi **REST API** (didukung oleh Laravel Sanctum dari sisi *backend*).
 
-### Tujuan Utama:
+### Fitur Utama:
 - Menghadirkan antarmuka pengguna (UI) seluler yang responsif dan mudah dinavigasi.
-- Memungkinkan pengguna melakukan *checklist* latihan harian langsung dari *smartphone* / *emulator*.
+- **Real-time Sync (Refresh):** Pengguna dapat memperbarui data riwayat latihan dari *server* tanpa perlu merestart aplikasi.
+- **Secure Authentication:** Dilengkapi dengan sistem *login* dan *logout* yang aman, termasuk fitur *Auto-Clean* untuk mencegah penumpukan token API di server.
 - Menampilkan riwayat latihan (Personal History) dengan *layout* khusus layar *mobile*.
-- Memastikan data di aplikasi selalu sinkron *real-time* dengan data di Web.
 
 ### Tech Stack (Mobile):
 - **IDE:** Android Studio
 - **UI/UX:** XML Layouts & Material Design
-- **Network/API:** Retrofit / Volley (Penghubung ke API Laravel)
-- **Local Storage:** SharedPreferences (Untuk menyimpan Token Sesi/Login)
+- **Network/API:** Retrofit (Penghubung ke API Laravel)
+- **Data Transfer:** JSON Serialization (Gson)
 
 ---
 
@@ -32,7 +32,9 @@ Aplikasi ini tidak berdiri sendiri, melainkan terhubung langsung secara sinkron 
 | ID | User Story | Priority |
 |----|------------|----------|
 | US-01 | Sebagai user, saya ingin login menggunakan akun yang sama dengan di Web | High |
-| US-02 | Sebagai user, saya ingin melihat riwayat (*History*) mingguan dengan tampilan *mobile* | Medium |
+| US-02 | Sebagai user, saya ingin menyegarkan (refresh) halaman agar bisa melihat jadwal terbaru tanpa harus keluar aplikasi | High |
+| US-03 | Sebagai user, saya ingin melihat riwayat (*History*) mingguan dengan tampilan *mobile* | Medium |
+| US-04 | Sebagai user, saya ingin bisa logout dengan aman agar akun saya tidak disalahgunakan | High |
 
 ---
 
@@ -41,62 +43,37 @@ Aplikasi ini tidak berdiri sendiri, melainkan terhubung langsung secara sinkron 
 ### Functional Requirements
 | ID | Feature | Deskripsi | Status |
 |----|---------|-----------|--------|
-| FR-01 | API Authentication | Login via endpoint API dan menyimpan *Bearer Token* secara lokal | ✅ Done |
-| FR-02 | Mobile Daily Tracker | Tombol interaktif untuk *update* status latihan ke *server* | ✅ Done |
-| FR-03 | Mobile History View | *RecyclerView* / *ListView* untuk menampilkan riwayat personal | ✅ Done |
-| FR-04 | Logout System | Menghapus token dari aplikasi dan memutuskan sesi API | ✅ Done |
+| FR-01 | API Authentication | Login via endpoint API. Termasuk fitur *Auto-Clean* token lama di server saat berhasil login. | ✅ Done |
+| FR-02 | Data Refresh | Tombol interaktif untuk memanggil ulang API GET History tanpa merestart aplikasi. | ✅ Done |
+| FR-03 | Mobile History View | *RecyclerView* untuk menampilkan riwayat personal secara dinamis dari database. | ✅ Done |
+| FR-04 | Secure Logout | Menghancurkan token Sanctum secara permanen di database dan melempar user ke halaman Login. | ✅ Done |
 
 ### Non-Functional Requirements
 | ID | Requirement | Deskripsi |
 |----|-------------|-----------|
-| NFR-01 | UI Responsiveness | *Layout* menyesuaikan ukuran layar (dikunci pada posisi *Portrait*) |
-| NFR-02 | Network Handling | Komunikasi jaringan berjalan lancar via IP lokal (LAN/WLAN) |
-| NFR-03 | Security | Token API disimpan dengan aman menggunakan *SharedPreferences* |
+| NFR-01 | UI Responsiveness | *Layout* menyesuaikan ukuran layar (dikunci pada posisi *Portrait*). |
+| NFR-02 | Network Handling | Komunikasi jaringan berjalan lancar via IP lokal (LAN/WLAN) untuk pengujian. |
 
 ---
 
 ## 📊 UML Diagrams (Mobile Architecture)
 
-### 1. Activity Diagram - Interaksi API Latihan
+### 1. Activity Diagram - Alur Refresh & Logout
 ```mermaid
 flowchart TD
-    Start([Buka_Aplikasi]) --> CekToken{Punya_Token?}
-    CekToken -- Tidak --> Login[Arahkan_ke_Login_Activity]
-    CekToken -- Ya --> Fetch[Ambil_Data_API_Jadwal]
+    Start([Buka_Aplikasi]) --> Login[Login_via_API]
+    Login --> Dashboard[Tampil_Halaman_History]
     
-    Fetch --> UI[Tampilkan_Jadwal_di_Layar]
-    UI --> Tap[Klik_Tombol_Selesai]
+    Dashboard --> Pilihan{Aksi_User}
     
-    Tap --> Post[Kirim_POST_Request_ke_Server]
-    Post --> ServerRes{Response_200_OK?}
+    Pilihan -- Tekan_Refresh --> FetchAPI[Tembak_API_GET_History]
+    FetchAPI --> UpdateUI[Perbarui_RecyclerView]
+    UpdateUI --> Dashboard
     
-    ServerRes -- Sukses --> UpdateUI[Ubah_Warna_Tombol_Hijau]
-    ServerRes -- Gagal --> Toast[Tampilkan_Pesan_Error]
-    
-    UpdateUI --> Finish([Selesai])
-    Toast --> Finish
-```
-
-### 2. Sequence Diagram - Komunikasi Mobile ke Web API
-```mermaid
-sequenceDiagram
-    autonumber
-    actor User
-    participant Android as GenZehat_App
-    participant API as Laravel_Web_API
-    participant DB as MySQL_Database
-
-    User->>Android: Buka Menu History
-    Note over Android: Ambil Bearer Token (Local)
-    Android->>API: GET /api/history (Kirim Token)
-    
-    API->>API: Validasi Token Sanctum
-    API->>DB: Query Data History User
-    DB-->>API: Kirim Data
-    
-    API-->>Android: Return JSON Response
-    Note over Android: Parsing JSON ke Array
-    Android-->>User: Render di RecyclerView
+    Pilihan -- Tekan_Logout --> DelToken[Tembak_API_POST_Logout]
+    DelToken --> HapusServer[Hancurkan_Token_di_Laravel]
+    HapusServer --> ArahkanLogin[Kembali_ke_Halaman_Login]
+    ArahkanLogin --> Selesai([Selesai])
 ```
 
 ---
@@ -109,12 +86,8 @@ sequenceDiagram
 <img src="images/1android.jpg" width="300">
 <br><br>
 
-### Dashboard & Tracker
+### Dashboard & Fitur Refresh
 <img src="images/2android.jpg" width="300">
-<br><br>
-
-### Personal History
-<img src="images/3android.jpg" width="300">
 <br><br>
 
 </div>
@@ -134,20 +107,18 @@ php artisan serve --host=0.0.0.0 --port=8000
 ### Langkah 2: Cek IP Address (IPv4) Laptop Anda
 1. Buka CMD (Command Prompt) di Windows.
 2. Ketik perintah `ipconfig` dan tekan Enter.
-3. Cari baris **IPv4 Address** (Contoh: `192.168.1.x` atau `192.168.100.x`).
+3. Cari baris **IPv4 Address** (Contoh: `192.168.1.x`).
 4. Catat IP tersebut.
 
 ### Langkah 3: Konfigurasi Base URL di Android
-1. Buka *source code* Android Anda (misalnya di file `RetrofitClient`, `ApiConfig`, atau `Constants`).
-2. Jangan gunakan `localhost` atau `10.0.2.2`. Ganti *Base URL* tersebut menggunakan IPv4 yang sudah dicatat tadi.
+1. Buka file *source code* (misal `ApiClient.java`).
+2. Ganti *Base URL* tersebut menggunakan IPv4 yang sudah dicatat tadi.
 3. **Format yang benar:** `http://[IP_Laptop_Anda]:8000/api/` (Contoh: `http://192.168.1.5:8000/api/`).
 
 ### Langkah 4: Compile & Jalankan di Emulator Eksternal
 1. Pastikan Emulator Eksternal Anda sudah berjalan.
 2. Di Android Studio, pastikan nama emulator Anda sudah muncul di daftar perangkat terhubung (kiri atas tombol Play).
-3. Klik ▶️ **Run 'app'** untuk menginstal aplikasi (APK) langsung ke dalam emulator tersebut.
-
-*(Catatan: Pastikan firewall Windows Anda mengizinkan koneksi masuk pada port 8000 agar emulator tidak diblokir saat mengambil data API).*
+3. Klik ▶️ **Run 'app'** untuk menginstal aplikasi.
 
 ---
 **Dibuat oleh:** Dava Anugrah Putra
