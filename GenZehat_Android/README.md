@@ -58,7 +58,34 @@ Aplikasi ini terhubung langsung secara sinkron dengan *database* terpusat melalu
 
 ## 📊 UML Diagrams (Mobile Architecture)
 
-### 1. Activity Diagram - Alur Penggunaan Aplikasi (Mobile)
+### 1. Use Case Diagram - Interaksi Pengguna & Sistem
+Diagram ini memetakan batasan sistem (*System Boundary*) dan aksi apa saja yang bisa dilakukan oleh pengguna di dalam aplikasi Android GenZehat.
+
+```mermaid
+flowchart LR
+    %% Definisi Aktor
+    User((User Mobile))
+
+    %% Batas Sistem (System Boundary)
+    subgraph GenZehat_Android_App [Aplikasi Android GenZehat]
+        direction TB
+        UC1([🔑 Melakukan Login])
+        UC2([📜 Melihat Riwayat Latihan])
+        UC3([🔄 Menyegarkan Data / Refresh])
+        UC4([🚪 Melakukan Logout])
+    end
+
+    %% Relasi Aktor ke Use Case (Garis Lurus)
+    User --- UC1
+    User --- UC2
+    User --- UC3
+    User --- UC4
+
+    %% Relasi antar Use Case (Garis Putus-putus)
+    UC3 -.->|<< extend >>| UC2
+```
+
+### 2. Activity Diagram - Alur Penggunaan Aplikasi (Mobile)
 Diagram ini menggambarkan alur aktivitas pengguna dari pertama kali membuka aplikasi, melakukan pengecekan token, hingga melakukan *refresh* data atau *logout*.
 
 ```mermaid
@@ -87,7 +114,7 @@ flowchart TD
     PindahLogin --> Selesai([Selesai])
 ```
 
-### 2. Sequence Diagram - Komunikasi API Terpusat
+### 3. Sequence Diagram - Komunikasi API Terpusat
 Diagram ini memetakan bagaimana aplikasi Android berkomunikasi dua arah dengan server Laravel menggunakan metode *REST API* dan *Bearer Token*.
 
 ```mermaid
